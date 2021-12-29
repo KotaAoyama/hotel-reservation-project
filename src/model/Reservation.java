@@ -9,6 +9,8 @@ public class Reservation {
     public Date checkInDate;
     public Date checkOutDate;
 
+
+
     @Override
     public String toString() {
         return "Reservation{" +
