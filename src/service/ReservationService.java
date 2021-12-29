@@ -10,7 +10,7 @@ import java.util.Map;
 
 public class ReservationService {
 
-    Map<String, Reservation> reservationMap;
+    private Map<String, Reservation> reservationMap;
 
     public static void addRoom(IRoom room) {}
 
