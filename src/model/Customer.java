@@ -9,6 +9,8 @@ public class Customer {
     public String email;
 
     public Customer(String firstName, String lastName, String email) {
+        validateEmail(email);
+
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
@@ -23,7 +25,7 @@ public class Customer {
                 '}';
     }
 
-    public void validateEmail(String email) {
+    private void validateEmail(String email) {
         String emailRegex = "^(.+)@(.+).(.+)$";
         Pattern pattern = Pattern.compile(emailRegex);
         if (!pattern.matcher(email).matches()) {
