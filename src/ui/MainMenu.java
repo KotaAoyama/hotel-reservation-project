@@ -19,7 +19,14 @@ public class MainMenu {
                 System.out.println("4. Admin");
                 System.out.println("5. Exit");
                 System.out.println("==================================");
-                int userInput = Integer.parseInt(scanner.nextLine());
+
+                int userInput = 0;
+                try {
+                    userInput = Integer.parseInt(scanner.nextLine());
+                } catch (NumberFormatException ex) {
+                    System.out.println("Input is invalid. Please input number, from 1 to 5.");
+                    continue;
+                }
 
                 if (userInput == 1) {
 
@@ -38,9 +45,6 @@ public class MainMenu {
                     System.out.println("Input is invalid. Please input number, from 1 to 5.");
                 }
             }
-
-        } catch (NumberFormatException ex) {
-            System.out.println("Input is invalid. Please input number, from 1 to 5.");
         } catch (Exception ex) {
             ex.getLocalizedMessage();
         }

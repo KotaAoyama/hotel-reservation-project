@@ -4,7 +4,6 @@ import java.util.Scanner;
 
 public class AdminMenu {
 
-
     public void displayAdminMenu() {
         try (Scanner scanner = new Scanner(System.in)) {
 
@@ -19,7 +18,14 @@ public class AdminMenu {
                 System.out.println("4. Add a Room");
                 System.out.println("5. Back to Main Menu");
                 System.out.println("==================================");
-                int userInput = Integer.parseInt(scanner.nextLine());
+
+                int userInput;
+                try {
+                    userInput = Integer.parseInt(scanner.nextLine());
+                } catch (NumberFormatException ex) {
+                    System.out.println("Input is invalid. Please input number, from 1 to 5.");
+                    continue;
+                }
 
                 if (userInput == 1) {
 
