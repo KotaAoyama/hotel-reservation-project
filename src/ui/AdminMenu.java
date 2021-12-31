@@ -7,6 +7,7 @@ import model.IRoom;
 import model.Room;
 import model.RoomType;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Scanner;
@@ -56,10 +57,8 @@ public class AdminMenu {
 
                 } else if (userInput == 4) {
                     // Add a room
-                    List<IRoom> rooms = (List<IRoom>) adminResource.getAllRooms();
-                    IRoom newRoom = createARoom(scanner);
-                    rooms.add(newRoom);
-                    adminResource.addRoom(rooms);
+                    List<IRoom> newRooms = createRooms(scanner);
+                    adminResource.addRoom(newRooms);
                 } else if (userInput == 5) {
                     // Back to Main Menu
                     keepRunning = false;
@@ -74,6 +73,27 @@ public class AdminMenu {
             System.out.println(ex); // for debug
             ex.getLocalizedMessage();
         }
+    }
+
+    private List<IRoom> createRooms(Scanner scanner) {
+        List<IRoom> newRooms = new ArrayList<>();
+        String userInput;
+
+        boolean keepRunning = true;
+        while (keepRunning) {
+            IRoom newRoom = createARoom(scanner);
+            newRooms.add(newRoom);
+
+            System.out.println("Do you continue adding another room?");
+            System.out.println("Please type, 'yes' or 'no'.");
+            userInput = scanner.nextLine();
+            if (!userInput.equals("yes")) {
+                keepRunning = false;
+                System.out.println("Thank you for adding rooms");
+            }
+        }
+
+        return newRooms;
     }
 
     private IRoom createARoom(Scanner scanner) {

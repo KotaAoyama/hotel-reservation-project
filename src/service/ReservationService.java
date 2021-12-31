@@ -46,7 +46,7 @@ public class ReservationService {
     public void printAllReservation() {}
 
     public Collection<IRoom> getAllRooms() {
-        return new ArrayList<>(roomMap.values());
+        return roomMap.values();
     }
 
 }

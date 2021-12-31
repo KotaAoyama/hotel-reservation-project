@@ -27,7 +27,9 @@ public class AdminResource {
     }
 
     public void addRoom(List<IRoom> rooms) {
-        reservationService.addRoom(rooms.get(rooms.size() - 1));
+        for (IRoom room : rooms) {
+            reservationService.addRoom(room);
+        }
     }
 
     public Collection<IRoom> getAllRooms() {
