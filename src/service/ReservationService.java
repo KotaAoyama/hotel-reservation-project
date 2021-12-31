@@ -4,16 +4,16 @@ import model.Customer;
 import model.IRoom;
 import model.Reservation;
 
+import java.awt.List;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class ReservationService {
 
     private static ReservationService reservationService;
-
-    // key: Customer.email, value: Reservation
-    private Map<String, Collection<Reservation>> emailReservationsMap;
-    // key: roomId???, value: IRoom
-    private Map<String, IRoom> roomIdIRoomMap;
+    private final Set<Reservation> reservationSet = new HashSet<>();
+    private final Map<String, IRoom> roomMap = new HashMap<>();
+    private int autoIncrementRoomId = 1;
 
     public static ReservationService getInstance() {
         if (reservationService == null) {
@@ -23,38 +23,30 @@ public class ReservationService {
     }
 
     public void addRoom(IRoom room) {
-//        roomIdIRoomMap.put(roomId???, room);
+        roomMap.put(String.valueOf(autoIncrementRoomId), room);
+        autoIncrementRoomId++;
     }
 
     public IRoom getARoom(String roomId) {
-        return roomIdIRoomMap.get(roomId);
+        return roomMap.get(roomId);
     }
 
     public Reservation reserveARoom(Customer customer, IRoom room, Date checkInDate, Date checkOutDate) {
-
-        Reservation newReservation = new Reservation(customer, room, checkInDate, checkOutDate);
-        Collection<Reservation> resultReservations = new HashSet<>();
-
-        Collection<Reservation> existingReservations = getCustomerReservation(customer);
-        if (existingReservations != null) {
-            existingReservations.add(newReservation);
-            resultReservations = existingReservations;
-        } else {
-            resultReservations.add(newReservation);
-        }
-        emailReservationsMap.put(customer.email, resultReservations);
-
-        return newReservation;
+        return null;
     }
 
     public Collection<IRoom> findRooms(Date checkInDate, Date checkOutDate) {
         return null;
     }
 
-    private Collection<Reservation> getCustomerReservation(Customer customer) {
-        return emailReservationsMap.get(customer.email);
+    public Collection<Reservation> getCustomerReservation(Customer customer) {
+        return null;
     }
 
     public void printAllReservation() {}
+
+    public Collection<IRoom> getAllRooms() {
+        return new ArrayList<>(roomMap.values());
+    }
 
 }

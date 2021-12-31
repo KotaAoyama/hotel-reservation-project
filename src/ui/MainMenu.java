@@ -24,11 +24,11 @@ public class MainMenu {
                 System.out.println("5. Exit");
                 System.out.println("==================================");
 
-                int userInput = 0;
+                int userInput;
                 try {
                     userInput = Integer.parseInt(scanner.nextLine());
                 } catch (NumberFormatException ex) {
-                    System.out.println("Input is invalid. Please input number, from 1 to 5.");
+                    System.out.println("Input is invalid. Select a number, from 1 to 5.");
                     continue;
                 }
 
@@ -47,7 +47,7 @@ public class MainMenu {
                     keepRunning = false;
                     System.out.println("Exit!");
                 } else {
-                    System.out.println("Input is invalid. Please input number, from 1 to 5.");
+                    System.out.println("Input is invalid. Select a number, from 1 to 5.");
                 }
             }
         } catch (Exception ex) {
