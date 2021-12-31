@@ -1,15 +1,19 @@
 package ui;
 
+import api.HotelResource;
+import model.Customer;
+
 import java.util.Scanner;
 
 public class MainMenu {
 
+    private final HotelResource hotelResource = HotelResource.getInstance();
 
     public void displayMainMenu() {
         try (Scanner scanner = new Scanner(System.in)) {
 
             boolean keepRunning = true;
-            while(keepRunning) {
+            while (keepRunning) {
                 System.out.println("==================================");
                 System.out.println("◇◆◇◆◇ Hotel Reservation Menu ◇◆◇◆◇");
                 System.out.println("==================================");
@@ -33,7 +37,8 @@ public class MainMenu {
                 } else if (userInput == 2) {
 
                 } else if (userInput == 3) {
-
+                    Customer newCustomer = createCustomer(scanner);
+                    hotelResource.createACustomer(newCustomer.email, newCustomer.firstName, newCustomer.lastName);
                 } else if (userInput == 4) {
                     keepRunning = false;
                     AdminMenu adminMenu = new AdminMenu();
@@ -46,8 +51,36 @@ public class MainMenu {
                 }
             }
         } catch (Exception ex) {
+            System.out.println(ex); // For Debug
             ex.getLocalizedMessage();
         }
+    }
+
+    private Customer createCustomer(Scanner scanner) {
+        Customer newCustomer = null;
+        String email;
+        String firstName;
+        String lastName;
+
+        boolean keepRunning = true;
+        while (keepRunning) {
+            System.out.println("Please input your email.");
+            email = scanner.nextLine();
+            System.out.println("Please input your first name.");
+            firstName = scanner.nextLine();
+            System.out.println("Please input your last name.");
+            lastName = scanner.nextLine();
+
+            try {
+                newCustomer = new Customer(firstName, lastName, email);
+                System.out.println("Thank you!");
+                keepRunning = false;
+            } catch (IllegalArgumentException ex) {
+                System.out.println("Email format is invalid.");
+            }
+        }
+
+        return newCustomer;
     }
 
 }

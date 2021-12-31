@@ -8,10 +8,19 @@ import java.util.*;
 
 public class ReservationService {
 
+    private static ReservationService reservationService;
+
     // key: Customer.email, value: Reservation
     private Map<String, Collection<Reservation>> emailReservationsMap;
     // key: roomId???, value: IRoom
     private Map<String, IRoom> roomIdIRoomMap;
+
+    public static ReservationService getInstance() {
+        if (reservationService == null) {
+            reservationService = new ReservationService();
+        }
+        return reservationService;
+    }
 
     public void addRoom(IRoom room) {
 //        roomIdIRoomMap.put(roomId???, room);

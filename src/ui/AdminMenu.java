@@ -1,8 +1,14 @@
 package ui;
 
+import api.AdminResource;
+import model.Customer;
+
+import java.util.Collection;
 import java.util.Scanner;
 
 public class AdminMenu {
+
+    private final AdminResource adminResource = AdminResource.getInstance();
 
     public void displayAdminMenu() {
         try (Scanner scanner = new Scanner(System.in)) {
@@ -28,7 +34,10 @@ public class AdminMenu {
                 }
 
                 if (userInput == 1) {
-
+                    Collection<Customer> customers = adminResource.getAllCustomers();
+                    for (Customer customer : customers) {
+                        System.out.println(customer);
+                    }
                 } else if (userInput == 2) {
 
                 } else if (userInput == 3) {

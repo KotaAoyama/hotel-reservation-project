@@ -3,21 +3,30 @@ package service;
 import model.Customer;
 
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Map;
 
 public class CustomerService {
 
-    private static Map<String, Customer> customerMap;
+    private static CustomerService customerService;
+    private final Map<String, Customer> customerMap = new HashMap<>();
 
-    public static void addCustomer(String email, String firstName, String lastName) {
+    public static CustomerService getInstance() {
+        if (customerService == null) {
+            customerService = new CustomerService();
+        }
+        return customerService;
+    }
+
+    public void addCustomer(String email, String firstName, String lastName) {
         customerMap.put(email, new Customer(firstName, lastName, email));
     }
 
-    public static Customer getCustomer(String customerEmail) {
+    public Customer getCustomer(String customerEmail) {
         return customerMap.get(customerEmail);
     }
 
-    public static Collection<Customer> getAllCustomers() {
+    public Collection<Customer> getAllCustomers() {
         return customerMap.values();
     }
 }
