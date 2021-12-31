@@ -32,7 +32,7 @@ public class HotelResource {
     }
 
     public IRoom getRoom(String roomNumber) {
-        return null;
+        return reservationService.getARoom(roomNumber);
     }
 
     public Reservation bookARoom(String customerEmail, IRoom room, Date checkInDate, Date CheckOutDate) {

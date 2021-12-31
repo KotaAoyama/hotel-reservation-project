@@ -42,7 +42,7 @@ public class Room implements IRoom {
         return "Room{" +
                 "roomNumber='" + roomNumber + '\'' +
                 ", price=" + price +
-                ", enumeration=" + enumeration +
+                ", roomType=" + enumeration +
                 '}';
     }
 }

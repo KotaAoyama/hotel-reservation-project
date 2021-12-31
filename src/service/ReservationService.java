@@ -4,9 +4,7 @@ import model.Customer;
 import model.IRoom;
 import model.Reservation;
 
-import java.awt.List;
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class ReservationService {
 
@@ -23,11 +21,15 @@ public class ReservationService {
     }
 
     public void addRoom(IRoom room) {
-        roomMap.put(String.valueOf(autoIncrementRoomId), room);
-        autoIncrementRoomId++;
+        roomMap.put(room.getRoomNumber(), room);
     }
 
     public IRoom getARoom(String roomId) {
+        if (roomId == null) {
+            System.out.println("Internal Error occurred!");
+            return null;
+        }
+
         return roomMap.get(roomId);
     }
 

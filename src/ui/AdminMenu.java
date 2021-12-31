@@ -76,13 +76,13 @@ public class AdminMenu {
     }
 
     private List<IRoom> createRooms(Scanner scanner) {
-        List<IRoom> newRooms = new ArrayList<>();
+        List<IRoom> newRoomList = new ArrayList<>();
         String userInput;
 
         boolean keepRunning = true;
         while (keepRunning) {
             IRoom newRoom = createARoom(scanner);
-            newRooms.add(newRoom);
+            newRoomList.add(newRoom);
 
             System.out.println("Do you continue adding another room?");
             System.out.println("Please type, 'yes' or 'no'.");
@@ -93,7 +93,7 @@ public class AdminMenu {
             }
         }
 
-        return newRooms;
+        return newRoomList;
     }
 
     private IRoom createARoom(Scanner scanner) {
