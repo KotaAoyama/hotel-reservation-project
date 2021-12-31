@@ -11,7 +11,7 @@ public class FreeRoom extends Room {
     public String toString() {
         return "FreeRoom{" +
                 "roomNumber='" + roomNumber + '\'' +
-                ", price=" + price +
+                ", price= Free" +
                 ", enumeration=" + enumeration +
                 '}';
     }

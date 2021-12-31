@@ -40,32 +40,34 @@ public class AdminMenu {
                     continue;
                 }
 
-                if (userInput == 1) {
-                    // See all Customers
-                    Collection<Customer> customers = adminResource.getAllCustomers();
-                    for (Customer customer : customers) {
-                        System.out.println(customer);
-                    }
-                } else if (userInput == 2) {
-                    // See all Rooms
-                    Collection<IRoom> rooms = adminResource.getAllRooms();
-                    for (IRoom room : rooms) {
-                        System.out.println(room);
-                    }
-                } else if (userInput == 3) {
-                    // See all Reservations
-
-                } else if (userInput == 4) {
-                    // Add a room
-                    List<IRoom> newRooms = createRooms(scanner);
-                    adminResource.addRoom(newRooms);
-                } else if (userInput == 5) {
-                    // Back to Main Menu
-                    keepRunning = false;
-                    MainMenu mainMenu = new MainMenu();
-                    mainMenu.displayMainMenu();
-                } else {
-                    System.out.println("Input is invalid. Please input number, from 1 to 5.");
+                switch (userInput) {
+                    case 1:
+                        Collection<Customer> customers = adminResource.getAllCustomers();
+                        for (Customer customer : customers) {
+                            System.out.println(customer);
+                        }
+                        break;
+                    case 2:
+                        Collection<IRoom> rooms = adminResource.getAllRooms();
+                        for (IRoom room : rooms) {
+                            System.out.println(room);
+                        }
+                        break;
+                    case 3:
+                        // See all Reservations
+                        break;
+                    case 4:
+                        List<IRoom> newRooms = createRooms(scanner);
+                        adminResource.addRoom(newRooms);
+                        break;
+                    case 5:
+                        keepRunning = false;
+                        MainMenu mainMenu = new MainMenu();
+                        mainMenu.displayMainMenu();
+                        break;
+                    default:
+                        System.out.println("Input is invalid. Please input number, from 1 to 5.");
+                        break;
                 }
             }
 

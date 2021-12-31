@@ -32,22 +32,27 @@ public class MainMenu {
                     continue;
                 }
 
-                if (userInput == 1) {
-
-                } else if (userInput == 2) {
-
-                } else if (userInput == 3) {
-                    Customer newCustomer = createCustomer(scanner);
-                    hotelResource.createACustomer(newCustomer.email, newCustomer.firstName, newCustomer.lastName);
-                } else if (userInput == 4) {
-                    keepRunning = false;
-                    AdminMenu adminMenu = new AdminMenu();
-                    adminMenu.displayAdminMenu();
-                } else if (userInput == 5) {
-                    keepRunning = false;
-                    System.out.println("Exit!");
-                } else {
-                    System.out.println("Input is invalid. Select a number, from 1 to 5.");
+                switch (userInput) {
+                    case 1:
+                        break;
+                    case 2:
+                        break;
+                    case 3:
+                        Customer newCustomer = createCustomer(scanner);
+                        hotelResource.createACustomer(newCustomer.email, newCustomer.firstName, newCustomer.lastName);
+                        break;
+                    case 4:
+                        keepRunning = false;
+                        AdminMenu adminMenu = new AdminMenu();
+                        adminMenu.displayAdminMenu();
+                        break;
+                    case 5:
+                        keepRunning = false;
+                        System.out.println("Exit!");
+                        break;
+                    default:
+                        System.out.println("Input is invalid. Select a number, from 1 to 5.");
+                        break;
                 }
             }
         } catch (Exception ex) {
