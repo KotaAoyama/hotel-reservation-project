@@ -36,7 +36,18 @@ public class HotelResource {
     }
 
     public Reservation bookARoom(String customerEmail, IRoom room, Date checkInDate, Date CheckOutDate) {
-        return null;
+        if (customerEmail == null) {
+            System.out.println("The email is invalid. Please input again.");
+            return null;
+        }
+
+        Customer customer = hotelResource.getCustomer(customerEmail);
+        if (customer == null) {
+            System.out.println("The email doesn't exist. Please create your account first.");
+            return null;
+        }
+
+        return reservationService.reserveARoom(customer, room, checkInDate, CheckOutDate);
     }
 
     public Collection<Reservation> getCustomersReservations(String customerEmail) {

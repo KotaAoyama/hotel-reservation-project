@@ -1,6 +1,7 @@
 package ui;
 
 import api.HotelResource;
+import model.AvailableRoomsCondition;
 import model.Customer;
 import model.IRoom;
 
@@ -36,11 +37,11 @@ public class MainMenu {
 
                 switch (userInput) {
                     case 1:
-                        // search reserved rooms and show available rooms
-//                        Customer myCustomer = checkAccount(scanner);
-                        Collection<IRoom> availableRooms = getAvailableRooms(scanner);
-                        IRoom selectedRoom = getAvailableRoom(scanner, availableRooms);
-
+                        String email = getEmail(scanner);
+                        AvailableRoomsCondition availableRoomsCondition = getAvailableRoomCondition(scanner);
+                        IRoom selectedRoom = getAvailableRoom(scanner, availableRoomsCondition.getAvailableRooms());
+                        hotelResource.bookARoom(email, selectedRoom,
+                                availableRoomsCondition.getCheckInDate(), availableRoomsCondition.getCheckOutDate());
                         break;
                     case 2:
                         break;
@@ -68,17 +69,9 @@ public class MainMenu {
         }
     }
 
-    private Customer checkAccount(Scanner scanner) {
-
-        boolean keepRunning = true;
-        while (keepRunning) {
-            System.out.println("");
-
-
-            keepRunning = false;
-        }
-
-        return null;
+    private String getEmail(Scanner scanner) {
+        System.out.println("Please input your email.");
+        return scanner.nextLine();
     }
 
     private IRoom getAvailableRoom(Scanner scanner, Collection<IRoom> availableRooms) {
@@ -112,9 +105,9 @@ public class MainMenu {
         return selectedRoom;
     }
 
-    private Collection<IRoom> getAvailableRooms(Scanner scanner) {
-        Date checkInDate;
-        Date checkOutDate;
+    private AvailableRoomsCondition getAvailableRoomCondition(Scanner scanner) {
+        Date checkInDate = null;
+        Date checkOutDate = null;
         Collection<IRoom> availableRooms = new HashSet<>();
 
         boolean keepRunning = true;
@@ -140,8 +133,7 @@ public class MainMenu {
             keepRunning = false;
         }
 
-        
-        return availableRooms;
+        return new AvailableRoomsCondition(checkInDate, checkOutDate, availableRooms);
     }
 
     private Customer createCustomer(Scanner scanner) {

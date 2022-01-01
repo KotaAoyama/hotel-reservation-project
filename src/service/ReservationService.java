@@ -34,7 +34,12 @@ public class ReservationService {
     }
 
     public Reservation reserveARoom(Customer customer, IRoom room, Date checkInDate, Date checkOutDate) {
-        return null;
+        Reservation newReservation = new Reservation(customer, room, checkInDate, checkOutDate);
+        boolean isAdded = reservationSet.add(newReservation);
+        if (isAdded) {
+            System.out.println("Success!");
+        }
+        return newReservation;
     }
 
     public Collection<IRoom> findRooms(Date checkInDate, Date checkOutDate) {
