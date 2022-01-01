@@ -2,10 +2,7 @@ package ui;
 
 import api.AdminResource;
 import api.HotelResource;
-import model.Customer;
-import model.IRoom;
-import model.Room;
-import model.RoomType;
+import model.*;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -54,7 +51,7 @@ public class AdminMenu {
                         }
                         break;
                     case 3:
-                        // See all Reservations
+                        adminResource.displayAllReservations();
                         break;
                     case 4:
                         List<IRoom> newRooms = createRooms(scanner);

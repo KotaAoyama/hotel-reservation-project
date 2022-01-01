@@ -19,7 +19,10 @@ public class CustomerService {
     }
 
     public void addCustomer(String email, String firstName, String lastName) {
-        customerMap.put(email, new Customer(firstName, lastName, email));
+        Customer addedCustomer = customerMap.put(email, new Customer(firstName, lastName, email));
+        if (addedCustomer != null) {
+            System.out.println("Successfully added the customer!");
+        }
     }
 
     public Customer getCustomer(String customerEmail) {

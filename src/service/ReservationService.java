@@ -21,7 +21,10 @@ public class ReservationService {
     }
 
     public void addRoom(IRoom room) {
-        roomMap.put(room.getRoomNumber(), room);
+        IRoom addedRoom = roomMap.put(room.getRoomNumber(), room);
+        if (addedRoom != null) {
+            System.out.println("Successfully added room!");
+        }
     }
 
     public IRoom getARoom(String roomId) {
@@ -57,7 +60,6 @@ public class ReservationService {
             return getAvailableRooms(alreadyReservedRooms);
 
         } catch (NullPointerException ex) {
-            System.out.println(ex); // for debug
             System.out.println("Internal Server Error occurred!");
             return new HashSet<IRoom>();
         }
@@ -78,6 +80,9 @@ public class ReservationService {
     }
 
     public void printAllReservation() {
+        for (Reservation reservation : reservationSet) {
+            System.out.println(reservation);
+        }
     }
 
     public Collection<IRoom> getAllRooms() {
