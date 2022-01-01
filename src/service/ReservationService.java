@@ -37,7 +37,7 @@ public class ReservationService {
         Reservation newReservation = new Reservation(customer, room, checkInDate, checkOutDate);
         boolean isAdded = reservationSet.add(newReservation);
         if (isAdded) {
-            System.out.println("Success!");
+            System.out.println("Successfully booked the room!");
         }
         return newReservation;
     }
@@ -64,10 +64,21 @@ public class ReservationService {
     }
 
     public Collection<Reservation> getCustomerReservation(Customer customer) {
-        return null;
+        if (customer == null) {
+            return null;
+        }
+
+        return reservationSet.stream()
+                .filter(reservation -> Objects.equals(
+                        reservation.customer != null
+                        ? reservation.customer.email
+                        : null,
+                        customer.email))
+                .collect(Collectors.toSet());
     }
 
-    public void printAllReservation() {}
+    public void printAllReservation() {
+    }
 
     public Collection<IRoom> getAllRooms() {
         return roomMap.values();

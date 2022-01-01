@@ -4,6 +4,7 @@ import api.HotelResource;
 import model.AvailableRoomsCondition;
 import model.Customer;
 import model.IRoom;
+import model.Reservation;
 
 import java.sql.Date;
 import java.util.*;
@@ -35,15 +36,21 @@ public class MainMenu {
                     continue;
                 }
 
+                String email;
                 switch (userInput) {
                     case 1:
-                        String email = getEmail(scanner);
+                        email = getEmail(scanner);
                         AvailableRoomsCondition availableRoomsCondition = getAvailableRoomCondition(scanner);
                         IRoom selectedRoom = getAvailableRoom(scanner, availableRoomsCondition.getAvailableRooms());
                         hotelResource.bookARoom(email, selectedRoom,
                                 availableRoomsCondition.getCheckInDate(), availableRoomsCondition.getCheckOutDate());
                         break;
                     case 2:
+                        email = getEmail(scanner);
+                        Collection<Reservation> customerReservations = hotelResource.getCustomersReservations(email);
+                        for (Reservation customerReservation : customerReservations) {
+                            System.out.println(customerReservation);
+                        }
                         break;
                     case 3:
                         Customer newCustomer = createCustomer(scanner);

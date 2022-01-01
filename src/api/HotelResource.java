@@ -36,14 +36,11 @@ public class HotelResource {
     }
 
     public Reservation bookARoom(String customerEmail, IRoom room, Date checkInDate, Date CheckOutDate) {
-        if (customerEmail == null) {
-            System.out.println("The email is invalid. Please input again.");
-            return null;
-        }
-
-        Customer customer = hotelResource.getCustomer(customerEmail);
-        if (customer == null) {
-            System.out.println("The email doesn't exist. Please create your account first.");
+        Customer customer = null;
+        try {
+            customer = validateCustomer(customerEmail);
+        } catch (IllegalArgumentException ex) {
+            System.out.println(ex.getLocalizedMessage());
             return null;
         }
 
@@ -51,10 +48,32 @@ public class HotelResource {
     }
 
     public Collection<Reservation> getCustomersReservations(String customerEmail) {
-        return null;
+        Customer customer = null;
+
+        try {
+            customer = validateCustomer(customerEmail);
+        } catch (IllegalArgumentException ex) {
+            System.out.println(ex.getLocalizedMessage());
+            return null;
+        }
+
+        return reservationService.getCustomerReservation(customer);
     }
 
     public Collection<IRoom> findARoom(Date checkIn, Date checkOut) {
         return reservationService.findRooms(checkIn, checkOut);
+    }
+
+    private Customer validateCustomer(String customerEmail) {
+        if (customerEmail == null) {
+            throw new IllegalArgumentException("The email is invalid. Please input again.");
+        }
+
+        Customer customer = hotelResource.getCustomer(customerEmail);
+        if (customer == null) {
+            throw new IllegalArgumentException("The email doesn't exist. Please create your account first.");
+        }
+
+        return customer;
     }
 }
