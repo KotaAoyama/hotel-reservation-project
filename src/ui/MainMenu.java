@@ -2,8 +2,10 @@ package ui;
 
 import api.HotelResource;
 import model.Customer;
+import model.IRoom;
 
-import java.util.Scanner;
+import java.sql.Date;
+import java.util.*;
 
 public class MainMenu {
 
@@ -34,6 +36,11 @@ public class MainMenu {
 
                 switch (userInput) {
                     case 1:
+                        // search reserved rooms and show available rooms
+//                        Customer myCustomer = checkAccount(scanner);
+                        Collection<IRoom> availableRooms = getAvailableRooms(scanner);
+                        IRoom selectedRoom = getAvailableRoom(scanner, availableRooms);
+
                         break;
                     case 2:
                         break;
@@ -59,6 +66,82 @@ public class MainMenu {
             System.out.println(ex); // For Debug
             ex.getLocalizedMessage();
         }
+    }
+
+    private Customer checkAccount(Scanner scanner) {
+
+        boolean keepRunning = true;
+        while (keepRunning) {
+            System.out.println("");
+
+
+            keepRunning = false;
+        }
+
+        return null;
+    }
+
+    private IRoom getAvailableRoom(Scanner scanner, Collection<IRoom> availableRooms) {
+        IRoom selectedRoom = null;
+
+        boolean keepRunning = true;
+        while(keepRunning) {
+            System.out.println("Select a roomNumber.");
+            for (IRoom availableRoom : availableRooms) {
+                System.out.println(availableRoom);
+            }
+
+            String selectedRoomNumber = scanner.nextLine();
+            long count = availableRooms.stream()
+                    .filter(room -> Objects.equals(room.getRoomNumber(), selectedRoomNumber))
+                    .count();
+            if (count != 1.0) {
+                System.out.println("Selected roomNumber is invalid. Select a roomNumber again.");
+                continue;
+            }
+
+            selectedRoom  = hotelResource.getRoom(selectedRoomNumber);
+            if (selectedRoom == null) {
+                System.out.println("Internal Error occurred!");
+                throw new IllegalArgumentException("selectedRoomNumber is invalid.");
+            }
+
+            keepRunning = false;
+        }
+
+        return selectedRoom;
+    }
+
+    private Collection<IRoom> getAvailableRooms(Scanner scanner) {
+        Date checkInDate;
+        Date checkOutDate;
+        Collection<IRoom> availableRooms = new HashSet<>();
+
+        boolean keepRunning = true;
+        while (keepRunning) {
+            int compared;
+            try {
+                System.out.println("Please input checkInDate such as 2022-01-01");
+                checkInDate = Date.valueOf(scanner.nextLine());
+                System.out.println("Please input checkOutDate such as 2022-01-02.");
+                checkOutDate = Date.valueOf(scanner.nextLine());
+                compared = checkInDate.compareTo(checkOutDate);
+            } catch (IllegalArgumentException ex) {
+                System.out.println("Date format is invalid.");
+                continue;
+            }
+            if (compared >= 0) {
+                System.out.println("checkOutDate must be after checkInDate.");
+                continue;
+            }
+
+            availableRooms = hotelResource.findARoom(checkInDate, checkOutDate);
+
+            keepRunning = false;
+        }
+
+        
+        return availableRooms;
     }
 
     private Customer createCustomer(Scanner scanner) {

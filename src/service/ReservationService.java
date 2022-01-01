@@ -5,13 +5,13 @@ import model.IRoom;
 import model.Reservation;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class ReservationService {
 
     private static ReservationService reservationService;
     private final Set<Reservation> reservationSet = new HashSet<>();
     private final Map<String, IRoom> roomMap = new HashMap<>();
-    private int autoIncrementRoomId = 1;
 
     public static ReservationService getInstance() {
         if (reservationService == null) {
@@ -27,7 +27,7 @@ public class ReservationService {
     public IRoom getARoom(String roomId) {
         if (roomId == null) {
             System.out.println("Internal Error occurred!");
-            return null;
+            throw new IllegalArgumentException("Provided roomNumber is null.");
         }
 
         return roomMap.get(roomId);
@@ -38,7 +38,24 @@ public class ReservationService {
     }
 
     public Collection<IRoom> findRooms(Date checkInDate, Date checkOutDate) {
-        return null;
+        try {
+            Collection<IRoom> alreadyReservedRooms = reservationSet.stream()
+                    .filter(reservation ->
+                            checkInDate.compareTo(reservation.checkInDate) >= 0 &&
+                                    checkInDate.compareTo(reservation.checkOutDate) < 0)
+                    .filter(reservation ->
+                            checkOutDate.compareTo(reservation.checkInDate) > 0 &&
+                                    checkOutDate.compareTo(reservation.checkOutDate) <= 0)
+                    .map(reservation -> reservation.room)
+                    .collect(Collectors.toSet());
+
+            return getAvailableRooms(alreadyReservedRooms);
+
+        } catch (NullPointerException ex) {
+            System.out.println(ex); // for debug
+            System.out.println("Internal Server Error occurred!");
+            return new HashSet<IRoom>();
+        }
     }
 
     public Collection<Reservation> getCustomerReservation(Customer customer) {
@@ -51,4 +68,10 @@ public class ReservationService {
         return roomMap.values();
     }
 
+    private Collection<IRoom> getAvailableRooms(Collection<IRoom> alreadyReservedRooms) {
+
+        return roomMap.values().stream()
+                .filter(room -> !alreadyReservedRooms.contains(room))
+                .collect(Collectors.toSet());
+    }
 }
