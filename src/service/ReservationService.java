@@ -49,11 +49,8 @@ public class ReservationService {
         try {
             Collection<IRoom> alreadyReservedRooms = reservationSet.stream()
                     .filter(reservation ->
-                            checkInDate.compareTo(reservation.checkInDate) >= 0 &&
-                                    checkInDate.compareTo(reservation.checkOutDate) < 0)
-                    .filter(reservation ->
-                            checkOutDate.compareTo(reservation.checkInDate) > 0 &&
-                                    checkOutDate.compareTo(reservation.checkOutDate) <= 0)
+                            checkOutDate.after(reservation.checkInDate) &&
+                                    checkInDate.before(reservation.checkOutDate))
                     .map(reservation -> reservation.room)
                     .collect(Collectors.toSet());
 
