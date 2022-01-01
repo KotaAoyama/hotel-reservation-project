@@ -41,13 +41,29 @@ public class MainMenu {
                     case 1:
                         email = getEmail(scanner);
                         AvailableRoomsCondition availableRoomsCondition = getAvailableRoomCondition(scanner);
-                        IRoom selectedRoom = getAvailableRoom(scanner, availableRoomsCondition.getAvailableRooms());
+                        if (availableRoomsCondition.getAvailableRooms() == null ||
+                                availableRoomsCondition.getAvailableRooms().size() == 0) {
+                            System.out.println("NO rooms are available currently.");
+                            continue;
+                        }
+
+                        IRoom selectedRoom;
+                        try {
+                            selectedRoom = getSelectedRoom(scanner, availableRoomsCondition.getAvailableRooms());
+                        } catch (IllegalArgumentException ex) {
+                            System.out.println(ex.getLocalizedMessage());
+                            continue;
+                        }
+
                         hotelResource.bookARoom(email, selectedRoom,
                                 availableRoomsCondition.getCheckInDate(), availableRoomsCondition.getCheckOutDate());
                         break;
                     case 2:
                         email = getEmail(scanner);
                         Collection<Reservation> customerReservations = hotelResource.getCustomersReservations(email);
+                        if (customerReservations == null) {
+                            continue;
+                        }
                         for (Reservation customerReservation : customerReservations) {
                             System.out.println(customerReservation);
                         }
@@ -81,35 +97,22 @@ public class MainMenu {
         return scanner.nextLine();
     }
 
-    private IRoom getAvailableRoom(Scanner scanner, Collection<IRoom> availableRooms) {
-        IRoom selectedRoom = null;
+    private IRoom getSelectedRoom(Scanner scanner, Collection<IRoom> availableRooms) {
 
-        boolean keepRunning = true;
-        while(keepRunning) {
-            System.out.println("Select a roomNumber.");
-            for (IRoom availableRoom : availableRooms) {
-                System.out.println(availableRoom);
-            }
-
-            String selectedRoomNumber = scanner.nextLine();
-            long count = availableRooms.stream()
-                    .filter(room -> Objects.equals(room.getRoomNumber(), selectedRoomNumber))
-                    .count();
-            if (count != 1.0) {
-                System.out.println("Selected roomNumber is invalid. Select a roomNumber again.");
-                continue;
-            }
-
-            selectedRoom  = hotelResource.getRoom(selectedRoomNumber);
-            if (selectedRoom == null) {
-                System.out.println("Internal Error occurred!");
-                throw new IllegalArgumentException("selectedRoomNumber is invalid.");
-            }
-
-            keepRunning = false;
+        System.out.println("Select a roomNumber.");
+        for (IRoom availableRoom : availableRooms) {
+            System.out.println(availableRoom);
         }
 
-        return selectedRoom;
+        String selectedRoomNumber = scanner.nextLine();
+        long count = availableRooms.stream()
+                .filter(room -> Objects.equals(room.getRoomNumber(), selectedRoomNumber))
+                .count();
+        if (count != 1.0) {
+            throw new IllegalArgumentException("Selected roomNumber is invalid.");
+        }
+
+        return hotelResource.getRoom(selectedRoomNumber);
     }
 
     private AvailableRoomsCondition getAvailableRoomCondition(Scanner scanner) {

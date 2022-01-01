@@ -71,7 +71,7 @@ public class HotelResource {
 
         Customer customer = hotelResource.getCustomer(customerEmail);
         if (customer == null) {
-            throw new IllegalArgumentException("The email doesn't exist. Please create your account first.");
+            throw new IllegalArgumentException("The email doesn't exist in our customers. Please create your account first.");
         }
 
         return customer;
