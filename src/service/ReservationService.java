@@ -1,5 +1,6 @@
 package service;
 
+import model.AvailableRoomsCondition;
 import model.Customer;
 import model.IRoom;
 import model.Reservation;
@@ -92,4 +93,21 @@ public class ReservationService {
                 .filter(room -> !alreadyReservedRooms.contains(room))
                 .collect(Collectors.toSet());
     }
+
+    public AvailableRoomsCondition getRecommendedRoomsCondition(Date checkInDate, Date checkOutDate) {
+        Date recommendedCheckInDate = addDate(checkInDate, 7);
+        Date recommendedCheckOutDate = addDate(checkOutDate, 7);
+        
+        Collection<IRoom> recommendedRooms = findRooms(recommendedCheckInDate, recommendedCheckOutDate);
+        
+        return new AvailableRoomsCondition(recommendedCheckInDate, recommendedCheckOutDate, recommendedRooms);
+    }
+    
+    Date addDate(Date originalDate, int additionalDate) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(originalDate);
+        calendar.add(Calendar.DAY_OF_MONTH, additionalDate);
+        return calendar.getTime();
+    }
+
 }

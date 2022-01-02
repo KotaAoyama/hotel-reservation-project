@@ -6,12 +6,15 @@ import model.Customer;
 import model.IRoom;
 import model.Reservation;
 
-import java.sql.Date;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class MainMenu {
 
     private final HotelResource hotelResource = HotelResource.getInstance();
+    private final String dateFormatPattern = "yyyy-MM-dd";
 
     public void displayMainMenu() {
         try (Scanner scanner = new Scanner(System.in)) {
@@ -40,11 +43,24 @@ public class MainMenu {
                 switch (userInput) {
                     case 1:
                         email = getEmail(scanner);
-                        AvailableRoomsCondition availableRoomsCondition = getAvailableRoomCondition(scanner);
+                        AvailableRoomsCondition availableRoomsCondition = getAvailableRoomsCondition(scanner);
                         if (availableRoomsCondition.getAvailableRooms() == null ||
                                 availableRoomsCondition.getAvailableRooms().size() == 0) {
                             System.out.println("NO rooms are available currently.");
-                            continue;
+
+                            AvailableRoomsCondition recommendedRoomsCondition =
+                                    hotelResource.getRecommendedRoomsCondition(
+                                    availableRoomsCondition.checkInDate, availableRoomsCondition.checkOutDate);
+                            if (recommendedRoomsCondition.getAvailableRooms() == null ||
+                                    recommendedRoomsCondition.getAvailableRooms().size() == 0) {
+                                continue;
+                            }
+                            DateFormat dateFormat = new SimpleDateFormat(dateFormatPattern);
+                            System.out.println(
+                                    "[RECOMMENDATION]: You can book on " +
+                                            "CheckInDate: " + dateFormat.format(recommendedRoomsCondition.checkInDate) +
+                                            ", CheckOutDate: " + dateFormat.format(recommendedRoomsCondition.checkOutDate));
+                            availableRoomsCondition = recommendedRoomsCondition;
                         }
 
                         IRoom selectedRoom;
@@ -115,7 +131,7 @@ public class MainMenu {
         return hotelResource.getRoom(selectedRoomNumber);
     }
 
-    private AvailableRoomsCondition getAvailableRoomCondition(Scanner scanner) {
+    private AvailableRoomsCondition getAvailableRoomsCondition(Scanner scanner) {
         Date checkInDate = null;
         Date checkOutDate = null;
         Collection<IRoom> availableRooms = new HashSet<>();
@@ -125,11 +141,11 @@ public class MainMenu {
             int compared;
             try {
                 System.out.println("Please input checkInDate such as 2022-01-01");
-                checkInDate = Date.valueOf(scanner.nextLine());
+                checkInDate = new SimpleDateFormat(dateFormatPattern).parse(scanner.nextLine());
                 System.out.println("Please input checkOutDate such as 2022-01-02.");
-                checkOutDate = Date.valueOf(scanner.nextLine());
+                checkOutDate = new SimpleDateFormat(dateFormatPattern).parse(scanner.nextLine());
                 compared = checkInDate.compareTo(checkOutDate);
-            } catch (IllegalArgumentException ex) {
+            } catch (ParseException | NullPointerException ex) {
                 System.out.println("Date format is invalid.");
                 continue;
             }

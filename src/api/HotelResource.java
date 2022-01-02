@@ -1,5 +1,6 @@
 package api;
 
+import model.AvailableRoomsCondition;
 import model.Customer;
 import model.IRoom;
 import model.Reservation;
@@ -75,5 +76,9 @@ public class HotelResource {
         }
 
         return customer;
+    }
+
+    public AvailableRoomsCondition getRecommendedRoomsCondition(Date checkInDate, Date checkOutDate) {
+        return reservationService.getRecommendedRoomsCondition(checkInDate, checkOutDate);
     }
 }
