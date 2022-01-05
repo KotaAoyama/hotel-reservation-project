@@ -4,7 +4,7 @@
  - CLI
  - api
  - model
- - service (using singleton design pattern so data is stored in memory, not databases)
+ - service (using singleton design pattern so data is stored in the program memory, not persistent storage)
  
  #### How to use
  - Run src/HotelApplication by IDE in your local and then go to Terminal
